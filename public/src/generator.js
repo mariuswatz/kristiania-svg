@@ -8,13 +8,12 @@ const generate = (input) => {
     if(el.bb) {
       svgStr+=
         `<rect id="bb-${el.id}" x="${el.bb.x}" y="${el.bb.y}" width="${el.bb.width}" height="${el.bb.height}" style="fill:none; stroke:rgb(0,0,0)"/>`
-      svgStr+=`<text x="${el.bb.x+10}" y="${el.bb.y+10}">${el.id}</text>`
+      svgStr+=`<text x="${el.bb.x+2}" y="${el.bb.y+15}">${el.id}</text>`
     }
   })
     
   svgStr += '</svg>'
 
-  console.log(svgStr)
   return svgStr
 }
 

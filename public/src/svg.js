@@ -18,7 +18,9 @@ export const parseSVG = (svg) => {
 
     if(el.properties.id) {
       let type = getElementType(el.properties.id)
-      if(type) template.push(parseElement(el))
+      if(type) {
+        template.push(parseElement(el))
+      }
     }
   })
 
@@ -39,9 +41,14 @@ const parseElement = (el) => {
       }
     }
     if(tmp.properties.id && tmp.properties.id.startsWith('data')) {
-      let jsonStr = tmp.children[0].value
-      jsonStr = jsonStr.replaceAll('&quot;', '"')
-      node.data = JSON.parse(jsonStr)
+      console.log('jsonStr?',tmp)
+      try {
+        let jsonStr = tmp.children[0].value
+        jsonStr = jsonStr.replaceAll('&quot;', '"')
+        node.data = JSON.parse(jsonStr)
+      } catch(error) {
+        console.error(error)
+      }
     }
   })
 

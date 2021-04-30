@@ -15,21 +15,19 @@ const Preview = (input) => {
     })
   })
 
-  console.log('preview', input, input.input)
-
   return (
     <div style={{ width: '40vw' }}>
       <h1>This is &lt;Preview&gt;</h1>
-      <br />
+      <p>
       {input.input.elements &&
         input.input.elements.map((el, key) => {
           return (
             <li key={key}>
               id: {el.id}
-              <br />
             </li>
           )
         })}
+      </p>
       <img id="result-svg" width="600px" />
     </div>
   )
