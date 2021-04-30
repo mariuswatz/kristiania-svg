@@ -6,6 +6,7 @@ import Preview from '../preview/preview.jsx'
 const SVGData = () => {
   let template = parseSVG(svgTemplate)
   console.log('SVGData', template)
+  
   return <Preview input={template} />
 }
 

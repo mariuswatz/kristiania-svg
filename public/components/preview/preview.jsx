@@ -21,12 +21,11 @@ const Preview = (input) => {
     <div style={{ width: '40vw' }}>
       <h1>This is &lt;Preview&gt;</h1>
       <br />
-      {input.input.elements && input.input.elements.length}
       {input.input.elements &&
         input.input.elements.map((el, key) => {
           return (
             <li key={key}>
-              id: {el.properties.id}
+              id: {el.id}
               <br />
             </li>
           )

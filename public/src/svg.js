@@ -3,44 +3,49 @@ import { parse } from 'svg-parser'
 const elementTypeList = ['text', 'image', 'graphic']
 
 export const parseSVG = (svg) => {
-  let elements = []
-
   let data = parse(svg)
 
-  // pass over the root node
-  data = data.children[0]
+  console.log('parsed',data)
 
-  // parse children to find page elements
-  data.children.map((el) => {
-    let tmp = parseElement(el)
-    if (tmp) elements.push(tmp)
+  // skip root element
+  data=data.children[0]
+
+  let template = []
+
+
+  data.children.forEach(el => {
+    console.log(el.tagName,el.properties.id,el.children)
+
+    if(el.properties.id) {
+      let type = getElementType(el.properties.id)
+      if(type) template.push(parseElement(el))
+    }
   })
 
-  let result = {
-    elements: elements,
-  }
-
-  return result
+  console.log('template',template)
+  return {elements: template}
 }
 
 const parseElement = (el) => {
-  if (el.properties && el.properties.id) {
-    let type = getElementType(el.properties.id)
-    if (!type) return
+  let node = {id: el.properties.id}
 
-    el.children.forEach((child) => {
-      if (child.properties.id && child.properties.id.startsWith('bb')) {
-        el.bb = {
-          x: child.properties.x ? child.properties.x : 0,
-          y: child.properties.y ? child.properties.y : 0,
-          width: child.properties.width,
-          height: child.properties.height,
-        }
+  el.children.forEach(tmp => {
+    if(tmp.properties.id && tmp.properties.id.startsWith('bb')) {
+      node.bb = {
+        x: tmp.properties.x ? tmp.properties.x : 0,
+        y: tmp.properties.y ? tmp.properties.y : 0,
+        width: tmp.properties.width,
+        height: tmp.properties.height,
       }
-    })
-    console.log('type', type, 'id', el.properties.id, el)
-    return el
-  }
+    }
+    if(tmp.properties.id && tmp.properties.id.startsWith('data')) {
+      let jsonStr = tmp.children[0].value
+      jsonStr = jsonStr.replaceAll('&quot;', '"')
+      node.data = JSON.parse(jsonStr)
+    }
+  })
+
+  return node
 }
 
 export const getElementType = (str) => {
